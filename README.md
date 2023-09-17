@@ -325,13 +325,32 @@ Nếu bạn muốn khám phá bên trong hình ảnh, bạn có thể mở shell
 app.jar  dev      home     media    proc     run      srv      tmp      var
 bin      etc      lib      mnt      root     sbin     sys      usr
 / #
-``
+```
 
 Nếu bạn có một container đang chạy và muốn xem qua nó, bạn có thể làm như vậy bằng cách chạy docker exec:
 
-``
+```
 docker run --name myapp -ti --entrypoint /bin/sh myorg/myapp
 docker exec -ti myapp /bin/sh
 / #
-``
+```
+
+## Thực tiễn tốt nhất về Dockerfile
+
+
+- Một số Dockerfilethực hành mà chúng ta nên tuân theo:
+
+- Sử dụng  .dockerignoretệp để loại trừ các tệp và thư mục không cần thiết nhằm tăng hiệu suất của bản dựng.
+- Chỉ sử dụng images cơ sở đáng tin cậy và liên tục cập nhật images định kỳ.
+- Mỗi hướng dẫn trong phần này Dockerfile sẽ thêm một lớp bổ sung vào hình ảnh Docker. Giảm thiểu số lượng lớp bằng cách hợp nhất các hướng dẫn để tăng hiệu suất và thời gian của bản dựng.
+- Chạy với tư cách là Người dùng không phải root để tránh vi phạm bảo mật.
+- Giữ images nhỏ: Giảm kích thước images để triển khai nhanh hơn và tránh cài đặt các công cụ không cần thiết vào images của bạn. Sử dụng images tối thiểu để giảm bề mặt tấn công.
+- Sử dụng các thẻ cụ thể trên thẻ mới nhất cho hình ảnh để tránh làm hỏng các thay đổi theo thời gian.
+- Tránh sử dụng nhiều RUN lệnh vì nó tạo ra nhiều lớp có thể lưu trong bộ nhớ đệm, điều này sẽ ảnh hưởng đến hiệu quả của quá trình xây dựng.
+- Không bao giờ chia sẻ hoặc sao chép thông tin đăng nhập của ứng dụng hoặc bất kỳ thông tin nhạy cảm nào trong tệp Dockerfile. Nếu bạn sử dụng nó, hãy thêm nó vào .dockerignore
+- Sử dụng EXPOSE và ENVlệnh càng muộn càng tốt trong Dockerfile.
+- Sử dụng kẻ nói dối: Sử dụng kẻ nói dối như hadolint để kiểm tra Dockerfile của bạn để tìm các vấn đề phổ biến và cách thực hành tốt nhất.
+- Sử dụng một quy trình duy nhất cho mỗi vùng chứa: Mỗi vùng chứa phải chạy một quy trình duy nhất. Điều này giúp quản lý và giám sát vùng chứa dễ dàng hơn, đồng thời giúp giữ cho vùng chứa nhẹ.
+- Sử dụng các bản dựng nhiều giai đoạn: Sử dụng các bản dựng nhiều giai đoạn để tạo hình ảnh nhỏ hơn và hiệu quả hơn.
+
 
